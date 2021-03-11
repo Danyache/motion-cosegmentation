@@ -23,6 +23,8 @@ from logger import load_reconstruction_module, load_segmentation_module
 from modules.util import AntiAliasInterpolation2d
 from modules.dense_motion import DenseMotionNetwork
 
+import os
+
 
 if sys.version_info[0] < 3:
     raise Exception("You must use Python 3 or higher. Recommended version is Python 3.7")
@@ -139,11 +141,14 @@ def load_face_parser(cpu=False):
     from face_parsing.model import BiSeNet
 
     face_parser = BiSeNet(n_classes=19)
+#     print(os.path.dirname(os.path.realpath(__file__)))
+#     print(os.listdir())
+#     print(os.getcwd())
     if not cpu:
        face_parser.cuda()
-       face_parser.load_state_dict(torch.load('face_parsing/cp/79999_iter.pth'))
+       face_parser.load_state_dict(torch.load(f'{os.path.dirname(os.path.realpath(__file__))}/face_parsing/cp/79999_iter.pth'))
     else:
-       face_parser.load_state_dict(torch.load('face_parsing/cp/79999_iter.pth', map_location=torch.device('cpu')))
+       face_parser.load_state_dict(torch.load(f'{os.path.dirname(os.path.realpath(__file__))}/face_parsing/cp/79999_iter.pth', map_location=torch.device('cpu')))
  
     face_parser.eval()
 
